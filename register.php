@@ -75,45 +75,60 @@
 </nav>
 <div class="container">
     <div class="main-container">
-        <h1 class="title">Event Detail</h1>
+        <h1 class="title"><?php echo "我的第一段 PHP 脚本！";?>
+        </h1>
         <hr/>
-        <div class="col-md-4 left-container" style="padding-left: 0px;">
+        <div class="col-md-2"></div>
+        <div class="col-md-8" style="padding-left: 0px;">
             <div class="panel panel-default">
-                <div class="panel-heading" style="font-size: 20px;">Basic Information</div>
+                <div class="panel-heading" style="font-size: 20px;">Please enter your information</div>
                 <div class="panel-body">
-                    <ul style="list-style-type: none;font-size: 20px">
-                        <li>Event: XXX Concert 2017</li>
-                        <li>City: Tokyo</li>
-                        <li>Location: Tamati Station</li>
-                        <li>Number: 100</li>
-                        <li>Date: 2017/02/25</li>
-                        <li>Time: 13:00 - 15:00</li>
-                        <li>Price: $100</li>
-                    </ul>
+                    <form action="register_after.php" method="post">
+                        <div class="form-group">
+                            <label for="inputEmail">Email:</label>
+                            <input name="email" type="email" class="form-control" id="inputEmail" placeholder="user@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword">Password:</label>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputFullName">Full Name:</label>
+                            <input type="number" class="form-control" id="inputFullName" placeholder="full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputAddress">Address:</label>
+                            <input type="text" class="form-control" id="inputAddress" placeholder="address">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPhone">Phone:</label>
+                            <input type="number" class="form-control" id="inputPhone" placeholder="phone number">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBirthday">Birthday:</label>
+                            <input type="number" class="form-control" id="inputBirthday" placeholder="YYYYMMDD">
+                        </div>
+
+
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">Male
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">Female
+                        </label>
+                        <br/><br/>
+                        <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+                        <button type="button" class="btn btn-default btn-lg">Back</button>
+                    </form>
                 </div>
             </div>
-            <button class="btn btn-primary btn-lg" style="width: 100%;">
-                Book Now
-            </button>
         </div>
-        <div class="right-container col-md-8">
-            <img src="img/fullimage1.jpg">
-            <div class="detail">
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-            </div>
+        <div class="col-md-2">
 
         </div>
+
     </div>
 </div>
 
@@ -140,9 +155,6 @@
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="plugin/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
-    $(function(){
-        $('.carousel').carousel();
-    });
 
 </script>
 </body>
