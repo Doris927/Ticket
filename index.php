@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,6 +19,44 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<?php
+$logged_flag=false;
+session_start();
+//如果用户未登录，即未设置$_SESSION['user_id']时，执行以下代码
+if(isset($_SESSION['user_id'])){
+    $logged_flag=true;
+}
+
+require_once "DBManager.php";
+/**
+ * Created by PhpStorm.
+ * User: tammy
+ * Date: 17/2/21
+ * Time: 22:53
+ */
+$con = DBManager::getInstance()->getConnection();
+
+$flag_success=false;
+$msg='';
+
+
+$email=$_POST["email"];
+$password=$_POST["password"];
+$name=$_POST["name"];
+$sex=$_POST["sex"];
+$birthday=$_POST["birthday"];
+$address=$_POST["address"];
+$phone=$_POST["phone"];
+
+mysqli_query($con,"INSERT INTO `User`(`email`, `password`, `name`, `sex`, `birthday`, `address`, `phone`)
+                    VALUES ('$email','$password','$name',$sex,'$birthday','$address','$phone')");
+
+
+
+?>
+
+
+
 <body>
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container-fluid">
@@ -58,16 +96,23 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
+                <li>
+                    <?php
+                    if ($logged_flag){
+                        echo '<a href="#" >My Page</a>';
+                    }else{
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-login">Log In</a>';
+                    }
+                    ?>
+                </li>
+                <li>
+                    <?php
+                    if ($logged_flag){
+                        echo '<a href="logout.php">Log Out</a>';
+                    }else{
+                        echo '<a href="register.php">Sign Up</a>';
+                    }
+                    ?>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -186,6 +231,35 @@
     </div>
 </footer>
 
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Log In</h4>
+            </div>
+            <div class="modal-body">
+                <p>Please enter your email and password.</p>
+                <form id="form-login" action="login.php" method="post">
+                    <div class="form-group">
+                        <label for="inputEmail">Email:</label>
+                        <input type="email" name="email" class="form-control" id="inputEmail" placeholder="user@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword">Password:</label>
+                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-modal-login" type="button" class="btn btn-primary btn-lg" data-dismiss="modal">Log In</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
@@ -193,7 +267,9 @@
 <script src="plugin/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
     $(function(){
-        $('.carousel').carousel();
+        $('#btn-modal-login').click(function(){
+            $('#form-login').submit();
+        });
     });
 
 </script>

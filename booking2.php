@@ -19,6 +19,10 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<?php
+//    $user_id=$_GET['user_id'];
+//    $event_id=$_GET['event_id'];
+?>
 <body>
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container-fluid">
@@ -30,26 +34,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Brand</a>
+            <a class="navbar-brand" href="#">Ticket</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
+                <li class="active"><a href="#">Event<span class="sr-only">(current)</span></a></li>
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
@@ -58,7 +49,7 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
+                <li><a href="#">Log In</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -73,64 +64,73 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="container">
-    <div class="main-container">
-        <h1 class="title">Book Sheet</h1>
-        <hr/>
-        <div class="col-md-7" style="padding-left: 0px;">
-            <div class="panel panel-default">
-                <div class="panel-heading" style="font-size: 20px;">Please enter your information</div>
-                <div class="panel-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="inputFullName">Full Name:</label>
-                            <input type="text" class="form-control" id="inputFullName" placeholder="TANG CHENMIN">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputState">State:</label>
-                            <input type="text" class="form-control" id="inputState" placeholder="Shiga Ken">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputCity">City:</label>
-                            <input type="text" class="form-control" id="inputCity" placeholder="Otsu Shi">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputState">:</label>
-                            <input type="text" class="form-control" id="inputState" placeholder="Shiga Ken">
-                        </div>
+<ol class="breadcrumb">
+    <li><a href="#">Event</a></li>
+    <li><a href="#">Book</a></li>
+</ol>
+<div class="book-container row">
+
+    <h1>Book Sheet</h1>
+    <hr/>
+    <div class="col-md-8" style="padding-left: 0px">
+        <div class="panel panel-default">
+            <div class="panel-heading">Please enter your information</div>
+            <div class="panel-body">
+                <form>
+                    <div class="form-group">
+                        <label for="inputName">Full Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="TANG CHENMIN">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputState">State</label>
+                        <input type="text" class="form-control" id="inputState" placeholder="Shiga Ken">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCity">City</label>
+                        <input type="text" class="form-control" id="inputCity" placeholder="Otsu Shi">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputAddress">Address</label>
+                        <input type="text" class="form-control" id="inputAddress" placeholder="Matsugaoka 6-1-1 423">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputHolder">Card Holder</label>
+                        <input type="text" class="form-control" id="inputHolder" placeholder="TANG CHENMIN">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCard">Card Number</label>
+                        <input type="text" class="form-control" id="inputCard" placeholder="1234567890">
+                    </div>
 
 
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox"> Check me out
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                </div>
+                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                    <button class="btn btn-default btn-lg">Back</button>
+                </form>
             </div>
         </div>
-        <div class="col-md-5" style="padding-right: 0px;">
-            <div class="panel panel-default">
-                <div class="panel-heading" style="font-size: 20px;">Basic Information</div>
-                <div class="panel-body">
-                    <ul style="list-style-type: none;font-size: 20px">
-                        <li>Event: XXX Concert 2017</li>
-                        <li>City: Tokyo</li>
-                        <li>Location: Tamati Station</li>
-                        <li>Number: 100</li>
-                        <li>Date: 2017/02/25</li>
-                        <li>Time: 13:00 - 15:00</li>
-                        <li>Price: $100</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
     </div>
-</div>
 
-<div style="padding-left: 80px;padding-right: 80px;">
+    <div style="padding-right: 0px;" class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Event Information</div>
+            <div class="panel-body">
+                <ul style="padding: 10px;list-style-type: none;">
+                    <li><p>Event: XXX Concert 2017</p></li>
+                    <li><p>City: Tokyo</p></li>
+                    <li><p>Location: Tokyo Station </p></li>
+                    <li><p>Date and Time: 2017/02/25 11:30 - 15:30</p></li>
+                    <li><p>Price: $100</p></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+<div  class="row" style="padding-left: 80px;padding-right: 80px;">
     <hr/>
 </div>
 
@@ -145,6 +145,7 @@
     <div class="copy">
         &copy;Contact Information: <a href="mailto:tammytangg@gmail.com">tammytangg@gmail.com</a>
     </div>
+
 </footer>
 
 

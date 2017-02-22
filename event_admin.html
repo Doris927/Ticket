@@ -10,7 +10,7 @@
     <!-- Bootstrap -->
     <link href="plugin/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/reset.css" rel="stylesheet">
-    <link href="css/register.css" rel="stylesheet">
+    <link href="css/event_admin.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,49 +19,6 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-
-<?php
-require_once "DBManager.php";
-/**
- * Created by PhpStorm.
- * User: tammy
- * Date: 17/2/21
- * Time: 22:53
- */
-$con = DBManager::getInstance()->getConnection();
-
-$flag_success=false;
-$msg='';
-
-
-$email=$_POST["email"];
-$password=$_POST["password"];
-$name=$_POST["name"];
-$sex=$_POST["sex"];
-$birthday=$_POST["birthday"];
-$address=$_POST["address"];
-$phone=$_POST["phone"];
-
-mysqli_query($con,"INSERT INTO `User`(`email`, `password`, `name`, `sex`, `birthday`, `address`, `phone`)
-                    VALUES ('$email','$password','$name',$sex,'$birthday','$address','$phone')");
-
-
-if (mysqli_connect_errno($con)){
-    $msg=mysqli_connect_error();
-}else{
-    $flag_success=true;
-    $user_id=mysqli_insert_id($con);
-    $msg= 'Sign Up Succeed!';
-}
-
-session_start();
-//如果用户未登录，即未设置$_SESSION['user_id']时，执行以下代码
-if(!isset($_SESSION['user_id'])){
-    $_SESSION['user_id']=$user_id;
-    $_SESSION['uaer_name']=$name;
-}
-?>
-
 <body>
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container-fluid">
@@ -73,26 +30,13 @@ if(!isset($_SESSION['user_id'])){
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Brand</a>
+            <a class="navbar-brand" href="#">Ticket</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
+                <li class="active"><a href="#">Event<span class="sr-only">(current)</span></a></li>
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
@@ -101,53 +45,74 @@ if(!isset($_SESSION['user_id'])){
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <?php
-                    if ($flag_success){
-                        echo '<a href="#">My Page</a>';
-                    }else{
-                        echo '<a href="#">Sign In</a>';
-                    }
-                    ?>
-                </li>
-                <li>
-                    <?php
-                    if ($flag_success){
-                        echo '<a href="#">Log Out</a>';
-                    }else{
-                        echo '<a href="register.php">Sign Up</a>';
-                    }
-                    ?>
+                <li><a href="#">Log In</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="container">
-    <div class="main-container">
-        <h1 class="title">Sign Up</h1>
-        <hr/>
-        <div class="col-md-2"></div>
-        <div class="col-md-8" style="padding-left: 0px;">
-            <div class="panel panel-default">
-                <div class="panel-heading" style="font-size: 20px;">State</div>
-                <div class="panel-body" style="text-align: center;">
-                    <h2>
-                        <?php
-                        echo $msg;
-                        ?>
-                    </h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
+<div class="main-container row">
+    <h1>XXX Concert Participants</h1>
+    <hr/>
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Has Passed</th>
+                <th>Time</th>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>TANG CHENMIN</td>
+                <td>Shiga Otsu Matsugaoka 6-1-1</td>
+                <td>Passed</td>
+                <td>2017/02/20 13:13</td>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>TANG CHENMIN</td>
+                <td>Shiga Otsu Matsugaoka 6-1-1</td>
+                <td>Passed</td>
+                <td>2017/02/20 13:13</td>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>TANG CHENMIN</td>
+                <td>Shiga Otsu Matsugaoka 6-1-1</td>
+                <td>Passed</td>
+                <td>2017/02/20 13:13</td>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>TANG CHENMIN</td>
+                <td>Shiga Otsu Matsugaoka 6-1-1</td>
+                <td>Passed</td>
+                <td>2017/02/20 13:13</td>
+            </tr>
+            <tr>
+                <td>123</td>
+                <td>TANG CHENMIN</td>
+                <td>Shiga Otsu Matsugaoka 6-1-1</td>
+                <td>Passed</td>
+                <td>2017/02/20 13:13</td>
+            </tr>
 
-        </div>
-
+        </table>
     </div>
-</div>
 
-<div style="padding-left: 80px;padding-right: 80px;">
+</div>
+<div  class="row" style="padding-left: 80px;padding-right: 80px;">
     <hr/>
 </div>
 
@@ -162,6 +127,7 @@ if(!isset($_SESSION['user_id'])){
     <div class="copy">
         &copy;Contact Information: <a href="mailto:tammytangg@gmail.com">tammytangg@gmail.com</a>
     </div>
+
 </footer>
 
 
@@ -169,9 +135,5 @@ if(!isset($_SESSION['user_id'])){
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="plugin/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-<script>
-
-</script>
 </body>
 </html>
-
