@@ -1,3 +1,22 @@
+<?php
+    require_once "DBManager.php";
+    const ID = "id";
+    const NAME = "name";
+    const ADDRESS = "address";
+    const TIME_START = "time_buy";
+    const TIME_PASS = "time_pass";
+    const TIME_LAST = "time_last";
+    const TIME_NULL = "0000-00-00 00:00:00";
+
+    isset($_GET["event_id"]) or die("Unexpected parameter");
+    $event_id = $_GET["event_id"];
+    $conn = DBManager::getInstance()->getConnection();
+$sql = "select EntryPass.*, User.name, User.address from EntryPass, User where EntryPass.event_id = $event_id
+and EntryPass.user_id = User.id";
+$result = $conn->query($sql) or die("No event found");
+$result->num_rows > 0 or die("No event found");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,45 +91,33 @@
                 <th>Has Passed</th>
                 <th>Time</th>
             </tr>
-            <tr>
-                <td>123</td>
-                <td>TANG CHENMIN</td>
-                <td>Shiga Otsu Matsugaoka 6-1-1</td>
-                <td>Passed</td>
-                <td>2017/02/20 13:13</td>
-            </tr>
-            <tr>
-                <td>123</td>
-                <td>TANG CHENMIN</td>
-                <td>Shiga Otsu Matsugaoka 6-1-1</td>
-                <td>Passed</td>
-                <td>2017/02/20 13:13</td>
-            </tr>
-            <tr>
-                <td>123</td>
-                <td>TANG CHENMIN</td>
-                <td>Shiga Otsu Matsugaoka 6-1-1</td>
-                <td>Passed</td>
-                <td>2017/02/20 13:13</td>
-            </tr>
-            <tr>
-                <td>123</td>
-                <td>TANG CHENMIN</td>
-                <td>Shiga Otsu Matsugaoka 6-1-1</td>
-                <td>Passed</td>
-                <td>2017/02/20 13:13</td>
-            </tr>
-            <tr>
-                <td>123</td>
-                <td>TANG CHENMIN</td>
-                <td>Shiga Otsu Matsugaoka 6-1-1</td>
-                <td>Passed</td>
-                <td>2017/02/20 13:13</td>
-            </tr>
+
+            <?php
+                while($row = $result->fetch_assoc()) {
+            echo "<tr> \n";
+            echo "<td>" . $row[ID] . "</td> \n";
+            echo "<td>" . $row[NAME] . "</td> \n";
+            echo "<td>" . $row[ADDRESS] . "</td> \n";
+            $startTime = $row[TIME_START];
+            $endTime = $row[TIME_LAST];
+            $passTime = $row[TIME_PASS];
+            if($passTime != null){
+            echo "<td name='passFlag'>Passed</td> \n";
+            echo "<td>". $passTime ."</td> \n";
+            }
+            else{
+            echo "<td name='passFlag'>Not Yet</td> \n";
+            echo "<td> N/A </td> \n";
+            }
+            echo "</tr> \n";
+            }
+
+            ?>
+
 
         </table>
     </div>
-
+    <button id="btn-start" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-scan">Start Entry</button>
 </div>
 <div  class="row" style="padding-left: 80px;padding-right: 80px;">
     <hr/>
@@ -130,10 +137,49 @@
 
 </footer>
 
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="modal-scan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Please scan your my number card and enter the password</h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <img src="img/cardscan.jpg"">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-modal-confirm" type="button" class="btn btn-primary btn-lg" data-dismiss="modal">Confirm</button>
+                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="plugin/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+    $('#btn-start').click(function(){
+        var count=0;
+        var idInt = setInterval(function(){
+            alert(count);
+            count++;
+            if(count==2){
+                clearInterval(idInt);
+            }
+        },1000);
+    });
+
+    $('#btn-modal-confirm').click(function() {
+        $('td[name="passFlag"]').html("Passed");
+    });
+
+</script>
 </body>
 </html>

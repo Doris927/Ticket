@@ -47,6 +47,10 @@ body{
     height: 200px;
 }
 
+.main-container .event-container :hover{
+    cursor: pointer;
+}
+
 .event-container img{
     width: 200px;
     height: 200px;

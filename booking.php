@@ -1,3 +1,29 @@
+<?php
+require_once "DBManager.php";
+
+const TITLE = "title";
+const CITY = "city";
+const ADDRESS = "location";
+const TIME_START = "starttime";
+const TIME_END = "endtime";
+const PRICE = "price";
+const NUMBER = "number";
+const CONTENT = "introduction";
+
+isset($_GET["event_id"]) or die("Unexpected parameter");
+$event_id = $_GET["event_id"];
+$conn = DBManager::getInstance()->getConnection();
+$sql = "select * from Event where id = $event_id";
+$result = $conn->query($sql) or die("No event found");
+$result->num_rows > 0 or die("No event found");
+$row = $result->fetch_assoc();
+$dateTime = $row[TIME_START];
+$startDate = date("Y-m-d", strtotime($dateTime));
+$startTime = date("H:i:s", strtotime($dateTime));
+$dateTime = $row[TIME_END];
+$endTime = date("H:i:s", strtotime($dateTime));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +45,23 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<?php
+$logged_flag=false;
+$user_id=null;
+session_start();
+//如果用户未登录，即未设置$_SESSION['user_id']时，执行以下代码
+if(isset($_SESSION['user_id'])){
+    $user_id=$_SESSION['user_id'];
+    $logged_flag=true;
+}
+?>
 <body>
+<input type="hidden" id="user_id" value="<?php
+echo $user_id;
+?>"/>
+<input type="hidden" id="event_id" value="<?php
+echo $event_id;
+?>"/>
 <nav class="navbar navbar-fixed-top navbar-inverse">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -58,16 +100,23 @@
                 <button type="submit" class="btn btn-default">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
+                <li>
+                    <?php
+                    if ($logged_flag){
+                        echo '<a href="#" >My Page</a>';
+                    }else{
+                        echo '<a href="#" data-toggle="modal" data-target="#modal-login">Log In</a>';
+                    }
+                    ?>
+                </li>
+                <li>
+                    <?php
+                    if ($logged_flag){
+                        echo '<a href="logout.php">Log Out</a>';
+                    }else{
+                        echo '<a href="register.php">Sign Up</a>';
+                    }
+                    ?>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -82,17 +131,17 @@
                 <div class="panel-heading" style="font-size: 20px;">Basic Information</div>
                 <div class="panel-body">
                     <ul style="list-style-type: none;font-size: 20px">
-                        <li>Event: XXX Concert 2017</li>
-                        <li>City: Tokyo</li>
-                        <li>Location: Tamati Station</li>
-                        <li>Number: 100</li>
-                        <li>Date: 2017/02/25</li>
-                        <li>Time: 13:00 - 15:00</li>
-                        <li>Price: $100</li>
+                        <li>Event: <?php echo $row[TITLE] ?></li>
+                        <li>City: <?php echo $row[CITY] ?></li>
+                        <li>Location: <?php echo $row[ADDRESS] ?></li>
+                        <li>Number: <?php echo $row[NUMBER] ?></li>
+                        <li>Date: <?php echo $startDate ?></li>
+                        <li>Time: <?php echo $startTime . " - " . $endTime ?></li>
+                        <li>Price: <?php echo "$" . $row[PRICE] ?></li>
                     </ul>
                 </div>
             </div>
-            <button class="btn btn-primary btn-lg" style="width: 100%;">
+            <button class="btn btn-primary btn-lg" style="width: 100%;" id="btn-book">
                 Book Now
             </button>
         </div>
@@ -100,16 +149,9 @@
             <img src="img/fullimage1.jpg">
             <div class="detail">
                 <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
-                </p>
-                <p>
-                    Titanic is a 1997 American epic romance-disaster film directed, written, co-produced, and co-edited by James Cameron. A fictionalized account of the sinking of the RMS Titanic, it stars Leonardo DiCaprio and Kate Winslet as members of different social classes who fall in love aboard the ship during its ill-fated maiden voyage.
+                    <?php
+                    echo $row[CONTENT];
+                    ?>
                 </p>
             </div>
 
@@ -141,9 +183,12 @@
 <script src="plugin/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
     $(function(){
-        $('.carousel').carousel();
+        $('#btn-book').click(function(){
+            var user_id=$('#user_id').val();
+            var event_id=$('#event_id').val();
+            location.href="addticket.php?user_id="+user_id+"&event_id="+event_id;
+        });
     });
-
 </script>
 </body>
 </html>

@@ -39,17 +39,11 @@ $con = DBManager::getInstance()->getConnection();
 $flag_success=false;
 $msg='';
 
+$sql="SELECT * FROM `Event` LIMIT 5";
 
-$email=$_POST["email"];
-$password=$_POST["password"];
-$name=$_POST["name"];
-$sex=$_POST["sex"];
-$birthday=$_POST["birthday"];
-$address=$_POST["address"];
-$phone=$_POST["phone"];
+$result=mysqli_query($con,$sql);
+$html_str="";
 
-mysqli_query($con,"INSERT INTO `User`(`email`, `password`, `name`, `sex`, `birthday`, `address`, `phone`)
-                    VALUES ('$email','$password','$name',$sex,'$birthday','$address','$phone')");
 
 
 
@@ -145,76 +139,38 @@ mysqli_query($con,"INSERT INTO `User`(`email`, `password`, `name`, `sex`, `birth
     <div class="main-container">
         <h1 class="title">Events</h1>
         <hr/>
-        <div class="event-container">
-            <div class="media">
-                <div class="media-body">
-                    <h2 class="media-heading">Media heading</h2>
-                    <p>This is Event1</p>
+        <?php
+        $count=1;
+        if($result->num_rows>0){
+            while($row=$result->fetch_assoc()){
+       ?>
+                <div class="event-container">
+                    <?php
+                    echo '<input name="event_id" type="hidden" value="'.$row['id'].'"/>'
+                    ?>
+                    <div class="media">
+                        <div class="media-body">
+                            <h2 class="media-heading"><?php
+                    echo $row['title'];?></h2>
+                    <p><?php
+                        echo $row['introduction'];?>
+                        </p>
                 </div>
                 <div class="media-right">
                     <a href="#">
-                        <img class="media-object" src="img/small1.jpg" alt="...">
+                        <img class="media-object" src="img/small<?php
+                        echo $count;
+                        ?>.jpg" alt="...">
                     </a>
                 </div>
             </div>
         </div>
         <hr/>
-        <div class="event-container">
-            <div class="media">
-                <div class="media-body">
-                    <h2 class="media-heading">Media heading</h2>
-                    <p>This is Event1</p>
-                </div>
-                <div class="media-right">
-                    <a href="#">
-                        <img class="media-object" src="img/small2.jpg" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <hr/>
-        <div class="event-container">
-            <div class="media">
-                <div class="media-body">
-                    <h2 class="media-heading">Media heading</h2>
-                    <p>This is Event1</p>
-                </div>
-                <div class="media-right">
-                    <a href="#">
-                        <img class="media-object" src="img/small3.jpg" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <hr/>
-        <div class="event-container">
-            <div class="media">
-                <div class="media-body">
-                    <h2 class="media-heading">Media heading</h2>
-                    <p>This is Event1</p>
-                </div>
-                <div class="media-right">
-                    <a href="#">
-                        <img class="media-object" src="img/small4.jpg" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <hr/>
-        <div class="event-container">
-            <div class="media">
-                <div class="media-body">
-                    <h2 class="media-heading">Media heading</h2>
-                    <p>This is Event1</p>
-                </div>
-                <div class="media-right">
-                    <a href="#">
-                        <img class="media-object" src="img/small5.jpg" alt="...">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <hr/>
+        <?php
+                $count++;
+            }
+        }
+        ?>
     </div>
 </div>
 
@@ -269,6 +225,12 @@ mysqli_query($con,"INSERT INTO `User`(`email`, `password`, `name`, `sex`, `birth
     $(function(){
         $('#btn-modal-login').click(function(){
             $('#form-login').submit();
+        });
+
+        $('.event-container').click(function(){
+            var event_id=$(this).find('input[name="event_id"]').val();
+            alert(event_id);
+            location.href="booking.php?event_id="+event_id;
         });
     });
 
